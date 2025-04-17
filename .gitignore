@@ -71,3 +71,11 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Third party plugins
+/[Aa]ssets/NaughtyAttributes/*
+/[Aa]ssets/NaughtyAttributes.meta
+/[Aa]ssets/Plugins/Demigiant/*
+/[Aa]ssets/Plugins/Demigiant.meta
+/[Aa]ssets/TextMesh Pro/*
+/[Aa]ssets/TextMesh Pro.meta
