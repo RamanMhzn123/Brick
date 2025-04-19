@@ -19,6 +19,7 @@ namespace CardGame.Scripts.Game_Elements
         public Card CardData { get; private set; }
         
         private bool _isDropped;
+        private bool _isHovering;
 
         private void Awake()
         {
@@ -37,7 +38,6 @@ namespace CardGame.Scripts.Game_Elements
 
         public void OnBeginDrag(PointerEventData eventData)
         {
-            _isDropped = false;
             _originalParent = transform.parent;
             _originalPosition = transform.position;
             transform.SetParent(_originalParent.root);
@@ -51,39 +51,14 @@ namespace CardGame.Scripts.Game_Elements
         
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (!_isDropped)
+            if(!_isDropped) // if card is just hovering not dropped
             {
                 transform.SetParent(_originalParent);
                 transform.position = _originalPosition;
                 SetInteractable(true);
             }
-            else
-            {
-                transform.SetParent(_originalParent);
-                transform.position = _originalPosition;
-                SetInteractable(false);
-                _isDropped = false;
-            }
         }
         
-        public void SetInteractable(bool isActive)
-        {
-            _canvasGroup.blocksRaycasts = isActive;
-            _canvasGroup.alpha = isActive ? 1 : 0.5f;
-        }
-        
-        public void SetDropState(bool  isDropped)
-        {
-            _isDropped = isDropped;
-        }
-        public void SetActiveAndInteractable(bool isActive)
-        {
-            gameObject.SetActive(isActive);
-            SetInteractable(isActive);
-        }
-
-        #endregion
-
         public void DropCardUI(Transform parent = null)
         {
             if (parent == null)
@@ -93,9 +68,22 @@ namespace CardGame.Scripts.Game_Elements
             else
             {
                 transform.SetParent(parent);
-                _isDropped = true;
             }
         }
+        
+        public void SetInteractable(bool isActive)
+        {
+            _canvasGroup.blocksRaycasts = isActive;
+            _canvasGroup.alpha = isActive ? 1 : 0.5f;
+        }
+        
+        public void SetActiveAndInteractable(bool isActive)
+        {
+            gameObject.SetActive(isActive);
+            SetInteractable(isActive);
+        }
+
+        #endregion
         
         # region CardData Utils
         public int GetCardNumber()
@@ -117,10 +105,15 @@ namespace CardGame.Scripts.Game_Elements
         
         public void PrepareForPool()
         {
-            _isDropped = false;
+            // _isDropped = false;
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
             transform.localScale = Vector3.one;
+        }
+
+        public void SetDrop(bool isDropped)
+        {
+            _isDropped = isDropped;
         }
     }
 }

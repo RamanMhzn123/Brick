@@ -9,7 +9,7 @@ namespace CardGame.Scripts.Game_Elements
     /// Represents a card drop zone that could be:
     /// - Middle stack
     /// - Own player stack
-    /// - Other player stack
+    /// - Another player stack
     /// Handles card placement validation and misplay penalties
     /// </summary>
     public class DropZone : MonoBehaviour, IDropHandler
@@ -124,21 +124,22 @@ namespace CardGame.Scripts.Game_Elements
             }
         }
 
+        /// <summary>
+        /// Handle wrong move or didn't drop card
+        /// </summary>
         private void HandleInvalidDrop()
         {
             bool isPenaltyCase = ownerPlayer == null || _currentPlayer != ownerPlayer;
-            
+
             if (isPenaltyCase)
             {
                 GameManager.instance?.GivePenalty(_currentPlayer);
-                _droppedCard.SetDropState(true);
-                _currentPlayer?.EndTurn();
-            }
-            else
-            {
+
                 _droppedCard.DropCardUI();
-                _droppedCard.SetInteractable(true); 
-                _droppedCard.SetDropState(false);
+                _droppedCard.SetDrop(true);
+                _droppedCard.SetInteractable(false);
+
+                _currentPlayer?.EndTurn();
             }
         }
         
