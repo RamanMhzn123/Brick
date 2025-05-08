@@ -159,6 +159,41 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &161543220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 161543221}
+  m_Layer: 5
+  m_Name: CardPoolParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &161543221
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161543220}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2028269197}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &226415561
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,6 +744,7 @@ MonoBehaviour:
   deckManager: {fileID: 702749995}
   cardPoolManager: {fileID: 1817198065}
   cardAnimator: {fileID: 1244624477}
+  penaltyManager: {fileID: 1725026515}
 --- !u!4 &834785063
 Transform:
   m_ObjectHideFlags: 0
@@ -1365,9 +1401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardSprite: {fileID: 0}
   moveDuration: 1
-  flipDuration: 0.5
   moveEase: 6
-  flipEase: 7
 --- !u!4 &1244624478
 Transform:
   m_ObjectHideFlags: 0
@@ -1891,6 +1925,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698298911}
   m_CullTransparentMesh: 1
+--- !u!1 &1725026514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1725026516}
+  - component: {fileID: 1725026515}
+  m_Layer: 0
+  m_Name: PenaltyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1725026515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725026514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 899883da9de7a564a9ec803d9ca972ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1725026516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725026514}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.588398, y: -9.466952, z: -0.15202397}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1808385187
 GameObject:
   m_ObjectHideFlags: 0
@@ -2020,7 +2098,7 @@ GameObject:
   - component: {fileID: 1817198063}
   - component: {fileID: 1817198065}
   m_Layer: 0
-  m_Name: Object Pool Manager
+  m_Name: CardPoolManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2038,6 +2116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de0cd13f8ef64bcb9056e486fc062e5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolParent: {fileID: 0}
 --- !u!4 &1817198064
 Transform:
   m_ObjectHideFlags: 0
@@ -2065,9 +2144,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1588b6b7448e4e0e99b8139c1239907f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 7227730578144747311, guid: 829c9e048406244cf9501e007142af5d, type: 3}
-  poolParent: {fileID: 0}
-  initialPoolSize: 20
+  poolParent: {fileID: 161543221}
+  cardPrefab: {fileID: 5256510768488624107, guid: 829c9e048406244cf9501e007142af5d, type: 3}
+  backCardPrefab: {fileID: 5256510768488624107, guid: 8adac9621c7e5174fbe912aecc731d92, type: 3}
+  cardPoolSize: 20
+  backCardPoolSize: 4
 --- !u!1 &2028269193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2116,12 +2197,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1980, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2136,8 +2217,8 @@ Canvas:
   m_GameObject: {fileID: 2028269193}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 671886015}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -2166,6 +2247,7 @@ RectTransform:
   - {fileID: 1193648201}
   - {fileID: 1671016453}
   - {fileID: 885587673}
+  - {fileID: 161543221}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2306,6 +2388,7 @@ SceneRoots:
   - {fileID: 1817198064}
   - {fileID: 369626298}
   - {fileID: 1244624478}
+  - {fileID: 1725026516}
   - {fileID: 823932164}
   - {fileID: 2028269197}
   - {fileID: 1014038116}

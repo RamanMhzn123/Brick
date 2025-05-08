@@ -1,3 +1,5 @@
+using CardGame.Scripts.Core.CardSystem;
+using CardGame.Scripts.Core.Managers;
 using UnityEngine;
 using CardGame.Scripts.Managers;
 using CardGame.Scripts.Game_Elements;

@@ -1,3 +1,4 @@
+using CardGame.Scripts.Core.CardSystem;
 using UnityEngine;
 using CardGame.Scripts.Game_Elements;
 

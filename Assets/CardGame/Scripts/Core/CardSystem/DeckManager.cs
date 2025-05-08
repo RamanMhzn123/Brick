@@ -1,9 +1,12 @@
 using System.Collections.Generic;
-using Random = System.Random;
-using UnityEngine;
+using CardGame.Scripts.Card_Creation_Logic;
+using CardGame.Scripts.Core.Managers;
 using CardGame.Scripts.Game_Elements;
+using CardGame.Scripts.Managers;
+using UnityEngine;
+using Random = System.Random;
 
-namespace CardGame.Scripts.Managers
+namespace CardGame.Scripts.Core.CardSystem
 {
     public class DeckManager : MonoBehaviour
     {
@@ -47,11 +50,7 @@ namespace CardGame.Scripts.Managers
                 (_deck[i], _deck[j]) = (_deck[j], _deck[i]); // Swap elements
             }
         }
-    
-        /// <summary>
-        /// Deal Card
-        /// </summary>
-        // [Button]
+        
         public void DealCards()
         {
             _players = GameManager.instance.allPlayers;
@@ -62,7 +61,7 @@ namespace CardGame.Scripts.Managers
             {
                 foreach (Player player in _players)
                 {
-                    if (_deck.Count == 0) return; // Stop if deck runs out of cards
+                    if (_deck.Count == 0) return; // Stop if the deck runs out of cards
 
                     CardUI drawnCard = _deckUI[_deck.Count-1]; // Take from the top
                     player.AddCard(drawnCard);

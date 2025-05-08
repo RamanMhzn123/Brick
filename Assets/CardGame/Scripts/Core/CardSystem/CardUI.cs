@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using CardGame.Scripts.Game_Elements;
 
-namespace CardGame.Scripts.Game_Elements
+namespace CardGame.Scripts.Core.CardSystem
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class CardUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -16,7 +17,7 @@ namespace CardGame.Scripts.Game_Elements
         [Header("Visuals")]
         public Image image;
         public TextMeshProUGUI text;
-        public Card CardData { get; private set; }
+        public Card CardData;
         
         private bool _isDropped;
         private bool _isHovering;
@@ -46,7 +47,20 @@ namespace CardGame.Scripts.Game_Elements
 
         public void OnDrag(PointerEventData eventData)
         {
-            _rectTransform.anchoredPosition += eventData.delta / transform.lossyScale.x;
+            if (_rectTransform == null)
+                return;
+
+            float scaleFactor = 1.0f;
+
+            // Calculate a scale factor (accounts for canvas scaling)
+            Canvas canvas = _rectTransform.GetComponentInParent<Canvas>();
+            if (canvas != null)
+            {
+                scaleFactor = canvas.scaleFactor;
+            }
+
+            // Apply movement with proper scaling
+            _rectTransform.anchoredPosition += eventData.delta / scaleFactor;
         }
         
         public void OnEndDrag(PointerEventData eventData)
@@ -61,14 +75,7 @@ namespace CardGame.Scripts.Game_Elements
         
         public void DropCardUI(Transform parent = null)
         {
-            if (parent == null)
-            {
-                transform.SetParent(_originalParent);
-            }
-            else
-            {
-                transform.SetParent(parent);
-            }
+            transform.SetParent(parent == null ? _originalParent : parent);
         }
         
         public void SetInteractable(bool isActive)

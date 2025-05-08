@@ -1024,7 +1024,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6.6314, y: -200}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 360, y: 110}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1994581460889514522
@@ -1077,6 +1077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b087e2c83f7cd422d894ffda10d7b673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deckTransform: {fileID: 1910101686153306306}
   id: 0
   powerUpData:
     coverTurns: 0

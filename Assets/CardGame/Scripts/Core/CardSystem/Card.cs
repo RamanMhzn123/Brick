@@ -11,7 +11,8 @@ namespace CardGame.Scripts.Game_Elements
         public CardColor cardColor;
         public PowerUpType powerUp;
         
-        public Card(int number, CardColor cardColor, PowerUpType powerUp, Sprite image)
+        public Card(int number = 0, CardColor cardColor = default, PowerUpType powerUp = default, 
+                        Sprite image = null)
         {
             this.number = number;
             this.image = image;

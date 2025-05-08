@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.PowerHandler;
 
-namespace CardGame.Scripts.Managers
+namespace CardGame.Scripts.Core.Managers
 {
     public class TurnManager : MonoBehaviour
     {
         public static TurnManager Instance { get; private set; }
     
-        public event Action<Player> OnTurnChanged;
+        public event Action<Player> OnTurnChanged; //issue
     
         private int _currentPlayerIndex;
         private List<Player> _players = new();
@@ -33,21 +34,12 @@ namespace CardGame.Scripts.Managers
             foreach (var player in _players)
             {
                 player.OnCardPlayed += EndTurn;
-                player.OnPlayerTurnFinished += ChangeTurn;
             }
             
             _currentPlayer = _players[_currentPlayerIndex];
             OnTurnChanged?.Invoke(_currentPlayer);
         }
-
-        /// <summary>
-        /// Check for penalty before next player turn
-        /// </summary>
-        private bool CheckPenalty()
-        {
-            return GameManager.instance.CheckForPenalty(_currentPlayer, _currentCard);
-        }
-
+        
         private void EndTurn(CardUI droppedCard, bool isCenter, bool isSuccess)
         {
             _currentCard = droppedCard;
@@ -58,13 +50,13 @@ namespace CardGame.Scripts.Managers
                 return;
             }
 
-            if (!isCenter) //card dropped in other player
+            if (!isCenter) //card dropped in another player
             {
                 OnTurnChanged?.Invoke(_currentPlayer);
                 return;
             }
             
-            if (droppedCard.GetPowerUp() == PowerUpType.None) //card dropped in center
+            if (droppedCard.GetPowerUp() == PowerUpType.None) //card dropped in a center
             {
                 OnTurnChanged?.Invoke(_currentPlayer);
                 return;
@@ -73,53 +65,64 @@ namespace CardGame.Scripts.Managers
             _powerUpManager.ApplyPowerUpEffect(droppedCard.GetPowerUp(), _currentPlayer);
             OnTurnChanged?.Invoke(_currentPlayer); //invoke here?
         }
-
-        private void ChangeTurn()
-        {
-            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
-            _currentPlayer = _players[_currentPlayerIndex];
-            OnTurnChanged?.Invoke(_currentPlayer);
-        }
         
         private void HandleUnsuccessfulPlay()
         {
-            if (_currentPlayer.replayTurns > 0)
+            //check penalty
+            if (CheckPenalty())
             {
-                _currentPlayer.ReducePowerUp(PowerUpType.Replay);
-                
-                if (!CheckPenalty())
+                AdvanceTurn();
+            }
+            else
+            {
+                if (_currentPlayer.replayTurns > 0)
                 {
-                    OnTurnChanged?.Invoke(_currentPlayer);
+                    _currentPlayer.ReducePowerUp(PowerUpType.Replay);
+                
+                    if (!CheckPenalty())
+                    {
+                        OnTurnChanged?.Invoke(_currentPlayer);
+                    }
+                    else
+                    {
+                        AdvanceTurn();
+                    }
                 }
                 else
                 {
                     AdvanceTurn();
                 }
             }
-            else
-            {
-                AdvanceTurn();
-            }
+        }
+        
+        /// <summary>
+        /// Check for penalty before the next player turn
+        /// </summary>
+        private bool CheckPenalty()
+        {
+            return GameManager.instance.CheckForPenalty(_currentPlayer, _currentCard);
         }
         
         private void AdvanceTurn()
         {
-            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
-            _currentPlayer = _players[_currentPlayerIndex];
+            MoveToNextPlayer();
 
             if(_currentPlayer.blockedTurns > 0)
             {
-                Debug.Log($"Player {_currentPlayer.id} is blocked and cannot play this turn.");
                 _currentPlayer.ReducePowerUp(PowerUpType.Block);
-
-                _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
-                _currentPlayer = _players[_currentPlayerIndex];
+               MoveToNextPlayer();
                 OnTurnChanged?.Invoke(_currentPlayer);
             }
             else
             {
                 OnTurnChanged?.Invoke(_currentPlayer);
             }
+        }
+        
+        private void MoveToNextPlayer()
+        {
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+            _currentPlayer = _players[_currentPlayerIndex];
         }
     }
 }

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using CardGame.Scripts.Core.CardSystem;
+using CardGame.Scripts.Core.Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using CardGame.Scripts.Managers;
@@ -90,7 +92,8 @@ namespace CardGame.Scripts.Game_Elements
         
         private void PlaceCardInZone()
         {
-            _droppedCard.DropCardUI(transform); 
+            _droppedCard.DropCardUI(transform);
+            _droppedCard.SetDrop(true);
             _droppedCard.SetInteractable(false);
             
             //disable previous card ui in face up stack
@@ -118,7 +121,7 @@ namespace CardGame.Scripts.Game_Elements
                 _currentPlayer.RemoveCard(_droppedCard);
                 _currentPlayer.ProcessCardPlay(_droppedCard, false, true);
             }
-            else // Own stack
+            else // Own stack (this won't be called)
             {
                 _currentPlayer.ProcessCardPlay(_droppedCard, false, false);
             }
@@ -131,16 +134,15 @@ namespace CardGame.Scripts.Game_Elements
         {
             bool isPenaltyCase = ownerPlayer == null || _currentPlayer != ownerPlayer;
 
-            if (isPenaltyCase)
-            {
-                GameManager.instance?.GivePenalty(_currentPlayer);
+            if (!isPenaltyCase) return;
+            
+            GameManager.instance?.GivePenalty(_currentPlayer);
 
-                _droppedCard.DropCardUI();
-                _droppedCard.SetDrop(true);
-                _droppedCard.SetInteractable(false);
+            _droppedCard.DropCardUI();
+            _droppedCard.SetDrop(true);
+            _droppedCard.SetInteractable(false);
 
-                _currentPlayer?.EndTurn();
-            }
+            _currentPlayer?.EndTurn();
         }
         
         public void AddCardToStack(CardUI cardUI)
@@ -153,7 +155,10 @@ namespace CardGame.Scripts.Game_Elements
         
         public CardUI GetTopCard()
         {
-            return faceUpDeck.Count == 0 ? null : faceUpDeck[faceUpDeck.Count - 1];
+            if (faceUpDeck.Count != 0) return faceUpDeck[faceUpDeck.Count - 1];
+            
+            Debug.Log("No face up deck");
+            return null;
         }
     }
 }

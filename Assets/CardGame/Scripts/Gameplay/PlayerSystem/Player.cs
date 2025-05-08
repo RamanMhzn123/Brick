@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using CardGame.Scripts.Core.CardSystem;
+using CardGame.Scripts.Core.Managers;
 using UnityEngine;
 using UnityEngine.UI;
-using CardGame.Scripts.Managers;
 using CardGame.Scripts.UI;
 
 namespace CardGame.Scripts.Game_Elements
 {
     public class Player : MonoBehaviour
     {
+        public RectTransform deckTransform;
         [Header("Player Properties")]
         public int id;
         public PlayerPowerUpData  powerUpData = new();
@@ -27,7 +29,6 @@ namespace CardGame.Scripts.Game_Elements
         [SerializeField] private List<CardUI> faceDownDeck = new(); //player hand
 
         public event Action<CardUI, bool, bool> OnCardPlayed;
-        public event Action OnPlayerTurnFinished;
         
         private void Awake()
         {
@@ -72,6 +73,10 @@ namespace CardGame.Scripts.Game_Elements
             }
         }
         
+        /// <summary>
+        /// Draws card from deck to zone
+        /// Penalty for misplay
+        /// </summary>
         private void DrawCard()
         {
             if (faceDownDeck.Count == 0 && !TryFlipFaceUpDeck())
@@ -91,6 +96,8 @@ namespace CardGame.Scripts.Game_Elements
             drawnCard?.SetActiveAndInteractable(true);
             faceUpZone.AddCardToStack(drawnCard);
             UpdatePlayerUI();
+            
+            //Check penalty
         }
         
         private bool TryFlipFaceUpDeck()
@@ -98,20 +105,21 @@ namespace CardGame.Scripts.Game_Elements
             if (faceUpZone.faceUpDeck.Count == 0)
             {
                 GameManager.instance.GameOver(this);
-                return false; // No cards to flip, player wins
+                return false;
             }
             
-            faceUpZone.faceUpDeck.Reverse(); 
+            List<CardUI> cardsToFlip = new List<CardUI>(faceUpZone.faceUpDeck);
+            faceUpZone.faceUpDeck.Clear();
             
-            foreach (CardUI cardUI in faceUpZone.faceUpDeck)
+            cardsToFlip.Reverse();
+            
+            foreach (CardUI cardUI in cardsToFlip)
             {
                 cardUI.SetInteractable(true);
                 faceDownDeck.Add(cardUI);
                 GameManager.instance.ReturnCardToPool(cardUI);
             }
             
-            faceUpZone.faceUpDeck.Clear();
-    
             Debug.Log($"Player {id} flipped {faceUpZone.faceUpDeck.Count} cards from the drop zone to their hand.");
             return true;
         }
@@ -133,13 +141,9 @@ namespace CardGame.Scripts.Game_Elements
         /// After no card = winner
         /// </summary>
         /// <returns></returns>
-        public CardUI GetBottomFaceUpCard()
+        private CardUI GetBottomFaceUpCard()
         {
-            if (faceUpZone.faceUpDeck.Count == 0)
-            {
-                Debug.Log("No cards to return from the face up stack");
-                return null;
-            }
+            if (faceUpZone.faceUpDeck.Count == 0) return null;
             
             CardUI cardUI = faceUpZone.faceUpDeck[0];
             faceUpZone.faceUpDeck.RemoveAt(0);
@@ -163,16 +167,6 @@ namespace CardGame.Scripts.Game_Elements
             UpdatePlayerUI();
         }
         
-        /// <summary>
-        /// Change/End Turn
-        /// </summary>
-        public void EndTurn() 
-        {
-            GetTopFaceUpCard()?.SetInteractable(false);
-            timerUI.StopTimer();
-            OnPlayerTurnFinished?.Invoke();
-        }
-        
         public void AddCardToBottom(CardUI card)
         {
             faceDownDeck.Insert(0, card);
@@ -191,6 +185,18 @@ namespace CardGame.Scripts.Game_Elements
             OnCardPlayed?.Invoke(card, isCenter, isSuccess);
         }
         
+        /// <summary>
+        /// Change/End Turn
+        /// </summary>
+        public void EndTurn() 
+        {
+			CardUI activeCard  = GetTopFaceUpCard();
+            activeCard?.SetInteractable(false);
+            timerUI.StopTimer();
+
+            OnCardPlayed?.Invoke(activeCard, false, false);
+        }
+        
         public void UpdatePlayerUI()
         {
             playerUI.UpdateDisplay(GetFaceUpDeckCount(), faceDownDeck.Count);
@@ -203,6 +209,22 @@ namespace CardGame.Scripts.Game_Elements
         public void ReducePowerUp(PowerUpType powerUpType)
         {
             powerUpData.ReducePowerUpTurns(powerUpType);
+        }
+
+        public Vector3 GetCardSpawnPosition() // deck position
+        {
+            return deckTransform.position;
+        }
+        
+        public bool TryGetPenaltyCard(out CardUI penaltyCard)
+        {
+            // First try to get from face-down deck
+            penaltyCard = GetFaceDownCard();
+            if (penaltyCard != null) return true;
+
+            // Fall back to bottom of face-up deck
+            penaltyCard = GetBottomFaceUpCard();
+            return penaltyCard != null;
         }
     }
 }

@@ -24,12 +24,11 @@ namespace CardGame.Scripts.Game_Elements
         
         public List<ColorSpritePair> baseColorSprites;
         public List<PowerUpSpritePair> powerUpSprites;
+        public Sprite backCardSprite;
         
-        // Runtime dictionaries for fast lookup
         private Dictionary<CardColor, Sprite> _baseSpriteDict;
         private Dictionary<PowerUpType, Sprite> _powerUpSpriteDict;
-
-        // Call this once at game start to initialize dictionaries
+        
         public void Initialize()
         {
             _baseSpriteDict = new Dictionary<CardColor, Sprite>();
@@ -44,8 +43,7 @@ namespace CardGame.Scripts.Game_Elements
                 _powerUpSpriteDict[pair.powerUp] = pair.sprite;
             }
         }
-
-        // Fast sprite access methods
+        
         public Sprite GetBaseSprite(CardColor color)
         {
             if (_baseSpriteDict.TryGetValue(color, out var sprite) && sprite != null)

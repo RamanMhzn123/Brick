@@ -39,5 +39,15 @@ namespace CardGame.Scripts.Managers
             
             return new Card(number, color, assignedPower, cardSprite);
         }
+
+        /// <summary>
+        /// For back card sprite with different color
+        /// </summary>
+        /// <returns></returns>
+        public static Card CreateBackCard()
+        {
+            Sprite cardSprite = _sprites.backCardSprite;
+            return new Card(image:cardSprite);
+        }
     }
 }

@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using CardGame.Scripts.Card_Creation_Logic;
+using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.PowerHandler;
 
-namespace CardGame.Scripts.Managers
+namespace CardGame.Scripts.Core.Managers
 {
     public class GameManager : MonoBehaviour
     {
@@ -17,7 +19,6 @@ namespace CardGame.Scripts.Managers
         
         [Header("Events")]
         public UnityEvent<Player> onGameOver;
-        
         public static GameManager instance;
         
         [Header("Managers")]
@@ -25,7 +26,7 @@ namespace CardGame.Scripts.Managers
         [SerializeField] private DeckManager deckManager;
         [SerializeField] private CardPoolManager cardPoolManager;
         [SerializeField] private CardAnimator cardAnimator;
-        private PenaltyManager _penaltyManager;
+        [SerializeField] private PenaltyManager penaltyManager;
         
         public void Awake()
         {
@@ -53,8 +54,7 @@ namespace CardGame.Scripts.Managers
             TurnManager.Instance.OnTurnChanged += player =>{_currentPlayer = player;};
             TurnManager.Instance.Initialize(allPlayers, powerUpManager);
             
-            _penaltyManager = new PenaltyManager();
-            _penaltyManager.Initialize(allPlayers, cardAnimator);
+            penaltyManager.Initialize(allPlayers, cardAnimator, cardPoolManager);
         }
         
         /// <summary>
@@ -64,13 +64,10 @@ namespace CardGame.Scripts.Managers
         {
             for (int i = 0; i < playerCount; i++)
             {
-                // TODO: if its up need to rotate, based on positions
-                Player player = Instantiate(playerPrefab).GetComponent<Player>();
-                player.transform.SetParent(twoPlayerPositions[i]);
+                Player player = Instantiate(playerPrefab,twoPlayerPositions[i])
+                                .GetComponent<Player>();
                 player.gameObject.name = "Player" + i;
-                
                 player.InitializePlayer(i);
-                
                 allPlayers.Add(player);
             }
             
@@ -99,15 +96,8 @@ namespace CardGame.Scripts.Managers
             // GameOver(_currentPlayer);
         }
         
-        /// <summary>
-        /// Handle game over when a player wins
-        /// </summary>
-        /// <param name="winner">The player who won the game</param>
         public void GameOver(Player winner)
         {
-            Debug.Log($"Game Over! Player {winner.id} is the winner!");
-
-            // Notify listeners that the game is over
             onGameOver?.Invoke(winner);
         }
 
@@ -115,15 +105,13 @@ namespace CardGame.Scripts.Managers
 
         public void GivePenalty(Player penaltyPlayer)
         {
-            _penaltyManager.ApplyPenalty(penaltyPlayer);
         }
 
         public bool CheckForPenalty(Player currentPlayer, CardUI droppedCard)
         {
-            return _penaltyManager.DetectWrongPlay(currentPlayer, droppedCard);
+            return penaltyManager.DetectWrongPlay(currentPlayer, droppedCard);
         }
 
         #endregion
-        
     }
 }
