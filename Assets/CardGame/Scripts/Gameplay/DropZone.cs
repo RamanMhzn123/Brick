@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Core.Managers;
+using CardGame.Scripts.Game_Elements;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using CardGame.Scripts.Managers;
 
-namespace CardGame.Scripts.Game_Elements
+namespace CardGame.Scripts.Gameplay
 {
     /// <summary>
     /// Represents a card drop zone that could be:
     /// - Middle stack
-    /// - Own player stack
-    /// - Another player stack
+    /// - All player stack
     /// Handles card placement validation and misplay penalties
     /// </summary>
     public class DropZone : MonoBehaviour, IDropHandler
     {
+		public CardColor zoneColor = CardColor.None;
         [SerializeField] private Player ownerPlayer; // The player who owns this drop zone
         public List<CardUI> faceUpDeck = new(); 
         
@@ -153,12 +153,13 @@ namespace CardGame.Scripts.Game_Elements
             faceUpDeck.Add(cardUI);
         }
         
+        /// <summary>
+        /// Retrieves the top card from the face-up deck.
+        /// </summary>
+        /// <returns>returns null if the face up deck is empty</returns>
         public CardUI GetTopCard()
         {
-            if (faceUpDeck.Count != 0) return faceUpDeck[faceUpDeck.Count - 1];
-            
-            Debug.Log("No face up deck");
-            return null;
+            return faceUpDeck.Count != 0 ? faceUpDeck[faceUpDeck.Count - 1] : null;
         }
     }
 }

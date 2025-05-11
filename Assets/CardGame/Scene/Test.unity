@@ -245,6 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5726e014cc7417d940eca2b4e0aeaf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoneColor: 2
   ownerPlayer: {fileID: 0}
   faceUpDeck: []
 --- !u!114 &226415564
@@ -286,7 +287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -429,7 +430,7 @@ GameObject:
   - component: {fileID: 462682594}
   - component: {fileID: 462682593}
   m_Layer: 5
-  m_Name: Blue (1)
+  m_Name: Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -466,6 +467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5726e014cc7417d940eca2b4e0aeaf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoneColor: 1
   ownerPlayer: {fileID: 0}
   faceUpDeck: []
 --- !u!114 &462682594
@@ -507,7 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -731,6 +733,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77314f9381ba4773bb8f02b45a5a46ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  centerZone:
+  - {fileID: 1197586080}
+  - {fileID: 226415563}
+  - {fileID: 462682593}
+  - {fileID: 1522271768}
+  - {fileID: 1808385189}
   twoPlayerPositions:
   - {fileID: 412094755}
   - {fileID: 1073499092}
@@ -1304,6 +1312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5726e014cc7417d940eca2b4e0aeaf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoneColor: 0
   ownerPlayer: {fileID: 0}
   faceUpDeck: []
 --- !u!114 &1197586081
@@ -1319,7 +1328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1400,7 +1409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardSprite: {fileID: 0}
-  moveDuration: 1
+  moveDuration: 2
   moveEase: 6
 --- !u!4 &1244624478
 Transform:
@@ -1462,7 +1471,7 @@ GameObject:
   - component: {fileID: 1522271769}
   - component: {fileID: 1522271768}
   m_Layer: 5
-  m_Name: Blue (2)
+  m_Name: Yellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1499,6 +1508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5726e014cc7417d940eca2b4e0aeaf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoneColor: 3
   ownerPlayer: {fileID: 0}
   faceUpDeck: []
 --- !u!114 &1522271769
@@ -1540,7 +1550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1597,8 +1607,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1197586079}
-  - {fileID: 226415562}
   - {fileID: 462682592}
+  - {fileID: 226415562}
   - {fileID: 1522271767}
   - {fileID: 1808385188}
   m_Father: {fileID: 2051143809}
@@ -1983,7 +1993,7 @@ GameObject:
   - component: {fileID: 1808385190}
   - component: {fileID: 1808385189}
   m_Layer: 5
-  m_Name: Blue (3)
+  m_Name: Purple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2020,6 +2030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5726e014cc7417d940eca2b4e0aeaf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoneColor: 4
   ownerPlayer: {fileID: 0}
   faceUpDeck: []
 --- !u!114 &1808385190
@@ -2061,7 +2072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.23529412, g: 0, b: 0.4716981, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

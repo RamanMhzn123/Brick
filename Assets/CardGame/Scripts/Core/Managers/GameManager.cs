@@ -4,12 +4,15 @@ using UnityEngine.Events;
 using CardGame.Scripts.Card_Creation_Logic;
 using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Game_Elements;
+using CardGame.Scripts.Gameplay;
 using CardGame.Scripts.PowerHandler;
 
 namespace CardGame.Scripts.Core.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        public List<DropZone> centerZone;
+
         [Header("Player Settings")]
         public List<RectTransform> twoPlayerPositions; //position maybe different based on no. of player
         public Player playerPrefab;
@@ -100,7 +103,7 @@ namespace CardGame.Scripts.Core.Managers
         {
             onGameOver?.Invoke(winner);
         }
-
+        
         #region Penalty
 
         public void GivePenalty(Player penaltyPlayer)

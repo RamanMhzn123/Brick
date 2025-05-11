@@ -28,6 +28,7 @@ namespace CardGame.Scripts.Game_Elements
         Blue,
         Yellow,
         Purple,
+        None
     }
     
     public enum PowerUpType

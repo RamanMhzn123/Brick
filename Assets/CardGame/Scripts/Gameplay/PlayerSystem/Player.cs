@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Core.Managers;
+using CardGame.Scripts.Gameplay;
 using UnityEngine;
 using UnityEngine.UI;
 using CardGame.Scripts.UI;
+using UnityEngine.Serialization;
 
 namespace CardGame.Scripts.Game_Elements
 {
@@ -202,7 +204,16 @@ namespace CardGame.Scripts.Game_Elements
             playerUI.UpdateDisplay(GetFaceUpDeckCount(), faceDownDeck.Count);
         }
         
-        public CardUI GetTopFaceUpCard() => faceUpZone.GetTopCard();
+        public CardUI GetTopFaceUpCard()
+        {
+            if (faceUpZone.GetTopCard() == null)
+            {
+                //TODO: wait to do?
+            }
+            
+            return faceUpZone.GetTopCard();
+        }
+
         public void RemoveCard(CardUI cardUI) => faceUpZone.faceUpDeck.Remove(cardUI);
         private int GetFaceUpDeckCount() => faceUpZone.faceUpDeck.Count;
         
