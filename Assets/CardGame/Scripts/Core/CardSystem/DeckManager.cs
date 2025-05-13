@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CardGame.Scripts.Card_Creation_Logic;
 using CardGame.Scripts.Core.Managers;
 using CardGame.Scripts.Game_Elements;
+using CardGame.Scripts.Gameplay.PlayerSystem;
 using CardGame.Scripts.Managers;
 using UnityEngine;
 using Random = System.Random;

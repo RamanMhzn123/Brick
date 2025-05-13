@@ -78,16 +78,18 @@ namespace CardGame.Scripts.Core.CardSystem
             transform.SetParent(parent == null ? _originalParent : parent);
         }
         
-        public void SetInteractable(bool isActive)
-        {
-            _canvasGroup.blocksRaycasts = isActive;
-            _canvasGroup.alpha = isActive ? 1 : 0.5f;
-        }
+        
         
         public void SetActiveAndInteractable(bool isActive)
         {
             gameObject.SetActive(isActive);
             SetInteractable(isActive);
+        }
+        
+        public void SetInteractable(bool isActive)
+        {
+            _canvasGroup.blocksRaycasts = isActive;
+            _canvasGroup.alpha = isActive ? 1 : 0.5f;
         }
 
         #endregion

@@ -5,6 +5,7 @@ using CardGame.Scripts.Card_Creation_Logic;
 using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay;
+using CardGame.Scripts.Gameplay.PlayerSystem;
 using CardGame.Scripts.PowerHandler;
 
 namespace CardGame.Scripts.Core.Managers

@@ -3,6 +3,7 @@ using CardGame.Scripts.Core.Managers;
 using UnityEngine;
 using CardGame.Scripts.Managers;
 using CardGame.Scripts.Game_Elements;
+using CardGame.Scripts.Gameplay.PlayerSystem;
 
 namespace CardGame.Scripts.PowerHandler.PowerUp
 {

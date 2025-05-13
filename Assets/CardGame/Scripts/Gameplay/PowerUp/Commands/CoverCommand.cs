@@ -1,5 +1,6 @@
 using UnityEngine;
 using CardGame.Scripts.Game_Elements;
+using CardGame.Scripts.Gameplay.PlayerSystem;
 
 namespace CardGame.Scripts.PowerHandler.PowerUp
 {

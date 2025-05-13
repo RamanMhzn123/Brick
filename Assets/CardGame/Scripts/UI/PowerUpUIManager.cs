@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using CardGame.Scripts.Core.Managers;
 using CardGame.Scripts.Game_Elements;
+using CardGame.Scripts.Gameplay.PlayerSystem;
 using CardGame.Scripts.Managers;
 using TMPro;
 using UnityEngine;
