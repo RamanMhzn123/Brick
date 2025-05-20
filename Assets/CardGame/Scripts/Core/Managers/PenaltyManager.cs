@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using CardGame.Scripts.Card_Creation_Logic;
 using CardGame.Scripts.Core.CardSystem;
-using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay;
 using CardGame.Scripts.Gameplay.PlayerSystem;
+using UnityEngine.Events;
 
 namespace CardGame.Scripts.Core.Managers
 {
     public class PenaltyManager : MonoBehaviour
     {
+        public UnityEvent onPenaltyApplied;
+        
         private List<Player> _allPlayers;
         private List<DropZone> _centerDropZones;
         private CardAnimator _cardAnimator;
         private CardPoolManager _cardPoolManager;
 
         private CardUI _playedCard;
-        private Player _currentPlayer;
-
-
+        private Player _penaltyPlayer;
+        
+        private Coroutine _penaltyCoroutine;
+        
         public void Initialize(List<Player> players, CardAnimator cardAnimator, CardPoolManager cardPoolManager)
         {
             _allPlayers = players;
@@ -29,10 +32,10 @@ namespace CardGame.Scripts.Core.Managers
             _cardPoolManager = cardPoolManager;
         }
         
-        public bool DetectWrongPlay(Player currentPlayer, CardUI droppedCard)
+        public bool DetectWrongPlay(Player penaltyPlayer, CardUI droppedCard)
         {
             _playedCard = droppedCard;
-            _currentPlayer = currentPlayer;
+            _penaltyPlayer = penaltyPlayer;
             
             if (CheckCenterZone())
                 return true;
@@ -42,18 +45,25 @@ namespace CardGame.Scripts.Core.Managers
         
         private bool CheckCenterZone()
         {
+            DropZone colorZone = null;
             foreach (DropZone zone in _centerDropZones)
             {
                 if (zone.zoneColor != _playedCard.GetCardColor()) continue;
-        
-                CardUI topCard = zone.GetTopCard();
                 
-                if (IsValidPlay(topCard, true))
-                {
-                    StartCoroutine(ApplyPenalty(_currentPlayer));
-                    return true;
-                }
+                colorZone = zone;
+                break;
             }
+
+            if (!colorZone) return false;
+            
+            CardUI topCard = colorZone.GetTopCard();
+                
+            if (IsInvalidPlay(topCard, true))
+            {
+                StartCoroutine(C_ApplyPenalty(_penaltyPlayer));
+                return true;
+            }
+
             return false;
         }
         
@@ -61,22 +71,22 @@ namespace CardGame.Scripts.Core.Managers
         {
             foreach (Player player in _allPlayers)
             {
-                if (player == _currentPlayer) continue;
+                if (player == _penaltyPlayer) continue;
         
                 CardUI topCard = player.GetTopFaceUpCard();
 
-                if (IsValidPlay(topCard, false))
+                if (IsInvalidPlay(topCard, false))
                 {
-                    StartCoroutine(ApplyPenalty(_currentPlayer));
+                    StartCoroutine(C_ApplyPenalty(_penaltyPlayer));
                     return true;
                 }
             }
             return false;
         }
         
-        private bool IsValidPlay(CardUI topCard, bool isCenterZone)
+        private bool IsInvalidPlay(CardUI topCard, bool isCenterZone)
         {
-            if (topCard == null)
+            if (!topCard)
             {
                 return isCenterZone && _playedCard.GetCardNumber() == 1;
             }
@@ -84,7 +94,18 @@ namespace CardGame.Scripts.Core.Managers
             return _playedCard.GetCardNumber() == topCard.GetCardNumber() + 1;
         }
         
-        private IEnumerator ApplyPenalty(Player penalizedPlayer)
+        public void GivePenalty(Player penaltyPlayer)
+        {
+            if (_penaltyCoroutine != null)
+            {
+                StopCoroutine(_penaltyCoroutine);
+                _penaltyCoroutine = null;
+            }
+            
+            _penaltyCoroutine = StartCoroutine(C_ApplyPenalty(penaltyPlayer));
+        }
+        
+        private IEnumerator C_ApplyPenalty(Player penalizedPlayer)
         {
             if (!penalizedPlayer) yield break;
 
@@ -118,13 +139,9 @@ namespace CardGame.Scripts.Core.Managers
             {
                 ReturnAllVisualsToPool(activeCardBacks);
             }
-        }
-
-        private void ReturnAllVisualsToPool(List<CardUI> visuals)
-        {
-            foreach (var visual in visuals)
-                if (visual.gameObject.activeInHierarchy)
-                    _cardPoolManager.ReturnCardBack(visual);
+            
+            Debug.Log("Penalty Applied");
+            onPenaltyApplied?.Invoke();
         }
         
         private IEnumerator ExecuteCardTransfer(CardUI cardBack, CardUI penaltyCard, 
@@ -148,6 +165,17 @@ namespace CardGame.Scripts.Core.Managers
             foreach (var transfer in transfers)
             {
                 yield return StartCoroutine(transfer);
+            }
+        }
+
+        private void ReturnAllVisualsToPool(List<CardUI> visuals)
+        {
+            foreach (var visual in visuals)
+            {
+                if (visual.gameObject.activeInHierarchy)
+                {
+                    _cardPoolManager.ReturnCardBack(visual);
+                }
             }
         }
     }

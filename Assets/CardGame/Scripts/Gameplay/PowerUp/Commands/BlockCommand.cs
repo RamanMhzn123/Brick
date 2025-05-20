@@ -1,24 +1,17 @@
-using UnityEngine;
-using CardGame.Scripts.Game_Elements;
+using CardGame.Scripts.Core.Managers;
 using CardGame.Scripts.Gameplay.PlayerSystem;
 
-namespace CardGame.Scripts.PowerHandler.PowerUp
+namespace CardGame.Scripts.Gameplay.PowerUp.Commands
 {
     public class BlockCommand : IPowerUpCommand
     {
         public void Execute(Player powerUser, Player targetPlayer)
         {
-            Debug.Log($"{powerUser.name} has used block power up.");
-
-            if (targetPlayer == null)
-            {
-                Debug.LogError("BlockCommand: Target player is null.");
-                return;
-            }
+            if (!targetPlayer) return;
             
             if (targetPlayer.powerUpData.IsCovered)
             {
-                Debug.Log($"Cannot block the Player {targetPlayer.id}. Player has a cover. Penalty!!!");
+                GameManager.instance.GivePenalty(powerUser);
                 return;
             }
             

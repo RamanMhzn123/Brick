@@ -172,10 +172,10 @@ namespace CardGame.Scripts.Gameplay.PlayerSystem
         {
             if (faceUpZone.faceUpDeck.Count <= 1) return;
             
-            CardUI previousCard = faceUpZone.faceUpDeck[faceDownDeck.Count - 1];
+            CardUI previousCard = faceUpZone.faceUpDeck[faceUpZone.faceUpDeck.Count - 2];
             if (GameManager.instance.CheckForPenalty(this, previousCard))
             {
-                EndTurn();
+                Debug.Log("Player got Penalty");
             }
         }
         
@@ -212,10 +212,21 @@ namespace CardGame.Scripts.Gameplay.PlayerSystem
             
             if (isSuccess)
             {
+                if (HasPlayerWon())
+                {
+                    GameManager.instance.GameOver(this);
+                    return;
+                }
+                
                 // drawCardButton.interactable = true;
                 GetTopFaceUpCard()?.SetActiveAndInteractable(true);
             }
             OnCardPlayed?.Invoke(card, isCenter, isSuccess);
+        }
+
+        private bool HasPlayerWon()
+        {
+            return faceUpZone.faceUpDeck.Count == 0 && faceDownDeck.Count == 0;
         }
         
         /// <summary>
@@ -254,6 +265,21 @@ namespace CardGame.Scripts.Gameplay.PlayerSystem
             powerUpData.ReducePowerUpTurns(powerUpType);
         }
 
+        public void StopTimer()
+        {
+            timerUI.StopTimer();
+        }
+
+        public void RestartTimer()
+        {
+            timerUI.ResetTimer();
+        }
+
+        public PlayerUI GetPlayerUI()
+        {
+            return playerUI;
+        }
+        
         #region Penalty related
 
         public bool TryGetPenaltyCard(out CardUI penaltyCard)

@@ -210,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5726e014cc7417d940eca2b4e0aeaf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoneColor: 5
   ownerPlayer: {fileID: 3600784343513177231}
   faceUpDeck: []
 --- !u!114 &5646062544958429000
@@ -1106,6 +1107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   faceDownDeckText: {fileID: 3738086851106570515}
   faceUpDeckText: {fileID: 7132554579521406756}
+  mainImage: {fileID: 5367719726432015474}
 --- !u!1 &5181127330430273654
 GameObject:
   m_ObjectHideFlags: 0

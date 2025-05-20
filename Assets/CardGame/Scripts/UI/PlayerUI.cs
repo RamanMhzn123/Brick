@@ -1,17 +1,31 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
-namespace CardGame.Scripts.Game_Elements
+namespace CardGame.Scripts.UI
 {
     public class PlayerUI : MonoBehaviour
     {
         public TextMeshProUGUI faceDownDeckText;
         public TextMeshProUGUI faceUpDeckText;
 
+        public Image mainImage;
+        
         public void UpdateDisplay(int up, int down)
         {
             faceUpDeckText.text = up.ToString();
             faceDownDeckText.text = down.ToString();
+        }
+
+        public void SetCoverImage()
+        {
+            mainImage.color = Color.green;
+        }
+
+        public void SetDefaultImage()
+        {
+            mainImage.color = Color.black ;
         }
     }
 }

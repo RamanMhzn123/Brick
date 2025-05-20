@@ -1,12 +1,11 @@
 using System;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using CardGame.Scripts.Core.Managers;
 using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay.PlayerSystem;
-using CardGame.Scripts.Managers;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace CardGame.Scripts.UI
 {
@@ -25,7 +24,7 @@ namespace CardGame.Scripts.UI
 
         private void Awake()
         {
-            if (instance == null)
+            if (!instance)
             {
                 instance = this;
             }

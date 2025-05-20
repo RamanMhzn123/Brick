@@ -3,10 +3,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using CardGame.Scripts.Card_Creation_Logic;
 using CardGame.Scripts.Core.CardSystem;
-using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay;
 using CardGame.Scripts.Gameplay.PlayerSystem;
-using CardGame.Scripts.PowerHandler;
+using CardGame.Scripts.Gameplay.PowerUp;
 
 namespace CardGame.Scripts.Core.Managers
 {
@@ -34,7 +33,7 @@ namespace CardGame.Scripts.Core.Managers
         
         public void Awake()
         {
-            if (instance == null)
+            if (!instance)
             {
                 instance = this;
                 DontDestroyOnLoad(gameObject);
@@ -102,13 +101,24 @@ namespace CardGame.Scripts.Core.Managers
         
         public void GameOver(Player winner)
         {
+            Debug.Log($"Player {winner.id} has won the game!");
+			ResetGame();
             onGameOver?.Invoke(winner);
         }
-        
+
+        private void ResetGame()
+        {
+            foreach (Player player in allPlayers)
+            {
+                player.StopTimer();
+            }
+        }
+
         #region Penalty
 
         public void GivePenalty(Player penaltyPlayer)
         {
+            penaltyManager.GivePenalty(penaltyPlayer);
         }
 
         public bool CheckForPenalty(Player currentPlayer, CardUI droppedCard)

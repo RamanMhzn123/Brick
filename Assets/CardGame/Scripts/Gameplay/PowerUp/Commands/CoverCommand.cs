@@ -1,14 +1,13 @@
-using UnityEngine;
-using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay.PlayerSystem;
+using UnityEngine;
 
-namespace CardGame.Scripts.PowerHandler.PowerUp
+namespace CardGame.Scripts.Gameplay.PowerUp.Commands
 {
     public class CoverCommand : IPowerUpCommand
     {
         public void Execute(Player powerUser, Player targetPlayer)
         {
-            Debug.Log($"{powerUser.name} has used cover power up.");
+            powerUser.GetPlayerUI().SetCoverImage();
             powerUser.coverTurns++;
         }
     }

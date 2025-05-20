@@ -1,9 +1,8 @@
 using CardGame.Scripts.Core.CardSystem;
-using UnityEngine;
-using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay.PlayerSystem;
+using UnityEngine;
 
-namespace CardGame.Scripts.PowerHandler.PowerUp
+namespace CardGame.Scripts.Gameplay.PowerUp.Commands
 {
     public class KnockoutCommand : IPowerUpCommand
     {

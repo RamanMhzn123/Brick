@@ -4,7 +4,7 @@ using UnityEngine;
 using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay.PlayerSystem;
-using CardGame.Scripts.PowerHandler;
+using CardGame.Scripts.Gameplay.PowerUp;
 
 namespace CardGame.Scripts.Core.Managers
 {
@@ -23,7 +23,7 @@ namespace CardGame.Scripts.Core.Managers
         
         private void Awake()
         {
-            if (Instance == null) Instance = this;
+            if (!Instance) Instance = this;
             else Destroy(gameObject);
         }
 
@@ -62,17 +62,20 @@ namespace CardGame.Scripts.Core.Managers
                 OnTurnChanged?.Invoke(_currentPlayer);
                 return;
             }
-
-            _powerUpManager.ApplyPowerUpEffect(droppedCard.GetPowerUp(), _currentPlayer);
-            OnTurnChanged?.Invoke(_currentPlayer); //invoke here?
+            
+            _currentPlayer.RestartTimer();
+            _powerUpManager.ApplyPowerUpEffect(droppedCard.GetPowerUp(), _currentPlayer, () =>
+            {
+                OnTurnChanged?.Invoke(_currentPlayer);
+            });
         }
         
         private void HandleUnsuccessfulPlay()
         {
-            //check penalty
             if (CheckPenalty())
             {
-                AdvanceTurn();
+                Debug.Log("Penalty played");
+                // AdvanceTurn();
             }
             else
             {
@@ -104,7 +107,7 @@ namespace CardGame.Scripts.Core.Managers
             return GameManager.instance.CheckForPenalty(_currentPlayer, _currentCard);
         }
         
-        private void AdvanceTurn()
+        public void AdvanceTurn() //advance turn
         {
             MoveToNextPlayer();
 

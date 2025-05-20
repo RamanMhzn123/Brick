@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay.PlayerSystem;
-using CardGame.Scripts.PowerHandler.PowerUp;
+using CardGame.Scripts.Gameplay.PowerUp.Commands;
 using CardGame.Scripts.UI;
+using UnityEngine;
 
-namespace CardGame.Scripts.PowerHandler
+namespace CardGame.Scripts.Gameplay.PowerUp
 {
     public class PowerUpManager : MonoBehaviour
     {
         private PowerUpType _currentPowerUpType;
         private Player _powerUser;
         private Dictionary<PowerUpType, IPowerUpCommand> _powerUpCommands;
-        public static Action<PowerUpType> OnPowerUpUsed;
+        private static Action _onPowerUpApplied;
         
         public void Initialize()
         {
@@ -32,10 +32,11 @@ namespace CardGame.Scripts.PowerHandler
             };
         }
         
-        public void ApplyPowerUpEffect(PowerUpType powerUpType, Player powerUser)
+        public void ApplyPowerUpEffect(PowerUpType powerUpType, Player powerUser, Action onPowerUpApplied)
         {
             _currentPowerUpType = powerUpType;
             _powerUser = powerUser;
+            _onPowerUpApplied = onPowerUpApplied;
             
             PowerUpUIManager.instance.ShowPowerUI(powerUser, powerUpType, ExecutePowerUpEffect);
         }
@@ -45,6 +46,7 @@ namespace CardGame.Scripts.PowerHandler
             if (_powerUpCommands.TryGetValue(_currentPowerUpType, out IPowerUpCommand command))
             {
                 command.Execute(_powerUser, targetPlayer);
+                _onPowerUpApplied?.Invoke();
             }
             else
             {

@@ -1,11 +1,10 @@
 using System.Collections.Generic;
+using UnityEngine;
 using CardGame.Scripts.Card_Creation_Logic;
 using CardGame.Scripts.Core.Managers;
 using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay.PlayerSystem;
 using CardGame.Scripts.Managers;
-using UnityEngine;
-using Random = System.Random;
 
 namespace CardGame.Scripts.Core.CardSystem
 {
@@ -43,11 +42,9 @@ namespace CardGame.Scripts.Core.CardSystem
         /// </summary>
         private void ShuffleDeck()
         {
-            Random rng = new Random();
-            
             for (int i = _deck.Count - 1; i > 0; i--)
             {
-                int j = rng.Next(0, i + 1); // Random index from 0 to i
+                int j = Random.Range(0, i + 1); // Random index from 0 to i
                 (_deck[i], _deck[j]) = (_deck[j], _deck[i]); // Swap elements
             }
         }

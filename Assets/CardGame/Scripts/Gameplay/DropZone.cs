@@ -26,10 +26,10 @@ namespace CardGame.Scripts.Gameplay
         public void OnDrop(PointerEventData eventData)
         {
             _droppedCard = eventData.pointerDrag.GetComponent<CardUI>();
-            if (_droppedCard == null) return;
+            if (!_droppedCard) return;
             
             _currentPlayer = GameManager.instance.GetCurrentPlayer();
-            if (_currentPlayer == null) return;
+            if (!_currentPlayer) return;
             
             if (_droppedCard.CardData == null) return;
             
@@ -57,10 +57,12 @@ namespace CardGame.Scripts.Gameplay
         {
             if (faceUpDeck.Count == 0)
             {
-                if (ownerPlayer == null) return _droppedCard.GetCardNumber() == 1;
-                if (ownerPlayer == _currentPlayer) return true;
-
-                return false;
+                if (!ownerPlayer)
+                {
+                    return _droppedCard.GetCardNumber() == 1 && _droppedCard.GetCardColor() ==  zoneColor;
+                }
+                
+                return ownerPlayer == _currentPlayer;
             }
 
             if (ownerPlayer == _currentPlayer)
@@ -99,7 +101,7 @@ namespace CardGame.Scripts.Gameplay
             
             //disable previous card ui in face up stack
             CardUI faceUpCard = GetTopCard(); 
-            if (faceUpCard != null)
+            if (faceUpCard)
             {
                 faceUpCard.gameObject.SetActive(false);
             }
@@ -111,7 +113,7 @@ namespace CardGame.Scripts.Gameplay
         
         private void HandleGameLogicAfterPlacement()
         {
-            if (ownerPlayer == null) // Center stack
+            if (!ownerPlayer) // Center stack
             {
                 _currentPlayer.RemoveCard(_droppedCard);
                 _currentPlayer.ProcessCardPlay(_droppedCard, true, true);
@@ -133,22 +135,20 @@ namespace CardGame.Scripts.Gameplay
         /// </summary>
         private void HandleInvalidDrop()
         {
-            bool isPenaltyCase = ownerPlayer == null || _currentPlayer != ownerPlayer;
+            bool isPenaltyCase = !ownerPlayer || _currentPlayer != ownerPlayer;
 
             if (!isPenaltyCase) return;
             
-            GameManager.instance?.GivePenalty(_currentPlayer);
+            GameManager.instance?.CheckForPenalty(_currentPlayer, _droppedCard);
 
             _droppedCard.DropCardUI();
             _droppedCard.SetDrop(true);
             _droppedCard.SetInteractable(false);
-
-            _currentPlayer?.EndTurn();
         }
         
         public void AddCardToStack(CardUI cardUI)
         {
-            if (cardUI == null) return;
+            if (!cardUI) return;
             
             cardUI.transform.SetParent(transform);
             faceUpDeck.Add(cardUI);
