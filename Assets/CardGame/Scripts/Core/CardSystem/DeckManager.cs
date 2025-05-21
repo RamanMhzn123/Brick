@@ -28,24 +28,27 @@ namespace CardGame.Scripts.Core.CardSystem
                 {
                     Card cardData = CardFactory.CreateCard(i, color);
                     _deck.Add(cardData);
-                    
-                    CardUI cardUI = cardPoolManager.GetCardUI(cardData);
-                    _deckUI.Add(cardUI);
                 }
             }
             
-            ShuffleDeck();
+            ShuffleDeck(cardPoolManager);
         }
     
         /// <summary>
         /// Fisher Yates algorithm for shuffling cards
         /// </summary>
-        private void ShuffleDeck()
+        private void ShuffleDeck(CardPoolManager  cardPoolManager)
         {
             for (int i = _deck.Count - 1; i > 0; i--)
             {
                 int j = Random.Range(0, i + 1); // Random index from 0 to i
                 (_deck[i], _deck[j]) = (_deck[j], _deck[i]); // Swap elements
+            }
+            
+            _deckUI.Clear();
+            foreach (Card card in _deck)
+            {
+                _deckUI.Add(cardPoolManager.GetCardUI(card));
             }
         }
         

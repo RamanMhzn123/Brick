@@ -9,7 +9,7 @@ namespace CardGame.Scripts.UI
     {
         public TextMeshProUGUI faceDownDeckText;
         public TextMeshProUGUI faceUpDeckText;
-
+        public Image highlightImage;
         public Image mainImage;
         
         public void UpdateDisplay(int up, int down)
@@ -26,6 +26,11 @@ namespace CardGame.Scripts.UI
         public void SetDefaultImage()
         {
             mainImage.color = Color.black ;
+        }
+
+        public void HighlightPlayer(bool isMyTurn)
+        {
+            highlightImage.gameObject.SetActive(isMyTurn);
         }
     }
 }

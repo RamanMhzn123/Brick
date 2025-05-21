@@ -114,7 +114,7 @@ namespace CardGame.Scripts.Core.Managers
 
             try
             {
-                foreach (var player in _allPlayers)
+                foreach (Player player in _allPlayers)
                 {
                     if (player == penalizedPlayer) continue;
 
@@ -124,7 +124,6 @@ namespace CardGame.Scripts.Core.Managers
                     cardBack.transform.position = player.GetCardSpawnPosition();
                     activeCardBacks.Add(cardBack);
 
-                    // Create and execute transfer
                     transfers.Add(ExecuteCardTransfer(
                         cardBack,
                         penaltyCard,

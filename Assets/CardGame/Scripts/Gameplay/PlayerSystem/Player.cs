@@ -116,6 +116,7 @@ namespace CardGame.Scripts.Gameplay.PlayerSystem
         /// </summary>
         private void UpdateTurnUI(bool isMyTurn)
         {
+            playerUI.HighlightPlayer(isMyTurn);
             drawCardButton.interactable = isMyTurn;
             passButton.interactable = false;
             
