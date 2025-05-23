@@ -1,3 +1,4 @@
+using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Core.Managers;
 using CardGame.Scripts.Gameplay.PlayerSystem;
 
@@ -15,7 +16,7 @@ namespace CardGame.Scripts.Gameplay.PowerUp.Commands
                 return;
             }
             
-            targetPlayer.blockedTurns++;
+            targetPlayer.GivePowerUp(PowerUpType.Block);
         }
     }
 }

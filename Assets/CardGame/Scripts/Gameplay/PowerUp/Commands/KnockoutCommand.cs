@@ -1,6 +1,6 @@
 using CardGame.Scripts.Core.CardSystem;
+using CardGame.Scripts.Core.Managers;
 using CardGame.Scripts.Gameplay.PlayerSystem;
-using UnityEngine;
 
 namespace CardGame.Scripts.Gameplay.PowerUp.Commands
 {
@@ -8,31 +8,28 @@ namespace CardGame.Scripts.Gameplay.PowerUp.Commands
     {
         public void Execute(Player powerUser, Player targetPlayer)
         {
-            Debug.Log($"{powerUser.name} has used knockout power up.");
-            
-            if (powerUser == null || targetPlayer == null)
+            if (!powerUser || !targetPlayer)
             {
-                Debug.LogError("KnockoutCommand: Power user or target player is null.");
                 return;
             }
 
-            if (targetPlayer.powerUpData.IsCovered)
+            if (targetPlayer.IsCovered())
             {
-                Debug.Log($"Cannot knockout the Player {targetPlayer.id}. Player has a cover. Penalty!!!");
+                GameManager.instance.GivePenalty(powerUser);
                 return;
             }
 
             for (int i = 0; i < 2; i++)
             {
                 CardUI card = powerUser.GetFaceDownCard();
-                if (card != null)
+                
+                if (card)
                 {
                     targetPlayer.AddCardToBottom(card);
-                    Debug.Log($"Player {targetPlayer.id} received {card.CardData.number} from Player {powerUser.id}.");
                 }
                 else
                 {
-                    Debug.LogWarning($"Player {powerUser.id} has no more cards to transfer.");
+                    GameManager.instance.GameOver(powerUser);
                     break;
                 }
             }

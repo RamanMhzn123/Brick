@@ -139,7 +139,6 @@ namespace CardGame.Scripts.Core.Managers
                 ReturnAllVisualsToPool(activeCardBacks);
             }
             
-            Debug.Log("Penalty Applied");
             onPenaltyApplied?.Invoke();
         }
         
@@ -169,7 +168,7 @@ namespace CardGame.Scripts.Core.Managers
 
         private void ReturnAllVisualsToPool(List<CardUI> visuals)
         {
-            foreach (var visual in visuals)
+            foreach (CardUI visual in visuals)
             {
                 if (visual.gameObject.activeInHierarchy)
                 {

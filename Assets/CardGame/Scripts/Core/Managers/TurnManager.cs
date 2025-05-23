@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using CardGame.Scripts.Core.CardSystem;
-using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay.PlayerSystem;
 using CardGame.Scripts.Gameplay.PowerUp;
 
@@ -79,7 +78,7 @@ namespace CardGame.Scripts.Core.Managers
             }
             else
             {
-                if (_currentPlayer.replayTurns > 0)
+                if (_currentPlayer.IsReplay())
                 {
                     _currentPlayer.ReducePowerUp(PowerUpType.Replay);
                 
@@ -111,7 +110,7 @@ namespace CardGame.Scripts.Core.Managers
         {
             MoveToNextPlayer();
 
-            if(_currentPlayer.blockedTurns > 0)
+            if(_currentPlayer.IsBlocked())
             {
                 _currentPlayer.ReducePowerUp(PowerUpType.Block);
                MoveToNextPlayer();

@@ -101,7 +101,6 @@ namespace CardGame.Scripts.Core.Managers
         
         public void GameOver(Player winner)
         {
-            Debug.Log($"Player {winner.id} has won the game!");
 			ResetGame();
             onGameOver?.Invoke(winner);
         }

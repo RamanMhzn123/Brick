@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace CardGame.Scripts.Game_Elements
+namespace CardGame.Scripts.Core.CardSystem
 {
     [Serializable]
     public class Card

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CardGame.Scripts.Core.CardSystem;
 using UnityEngine;
 
 namespace CardGame.Scripts.Game_Elements

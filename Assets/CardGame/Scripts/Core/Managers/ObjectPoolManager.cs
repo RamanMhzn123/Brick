@@ -40,7 +40,7 @@ namespace CardGame.Scripts.Core.Managers
             if (!_prefabs.TryGetValue(poolKey, out GameObject prefab)) return null;
             
             GameObject prefabGo = Instantiate(prefab, poolParent);
-            prefabGo.SetActive(true);
+            prefabGo.SetActive(false);
             return prefabGo;
         }
 

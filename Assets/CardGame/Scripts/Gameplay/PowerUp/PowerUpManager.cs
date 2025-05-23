@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.Gameplay.PlayerSystem;
 using CardGame.Scripts.Gameplay.PowerUp.Commands;

@@ -1,7 +1,7 @@
-using CardGame.Scripts.Managers;
 using UnityEngine;
+using CardGame.Scripts.Core.CardSystem;
 
-namespace CardGame.Scripts.Game_Elements
+namespace CardGame.Scripts.Gameplay.PlayerSystem
 {
     [System.Serializable]
     public class PlayerPowerUpData
@@ -26,9 +26,6 @@ namespace CardGame.Scripts.Game_Elements
                     break;
                 case PowerUpType.Replay:
                     replayTurns ++;
-                    break;
-                default:
-                    Debug.LogWarning($"Unknown power-up type: {powerUpType}");
                     break;
             }
         }

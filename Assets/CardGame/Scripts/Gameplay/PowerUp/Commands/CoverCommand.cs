@@ -1,5 +1,5 @@
+using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Gameplay.PlayerSystem;
-using UnityEngine;
 
 namespace CardGame.Scripts.Gameplay.PowerUp.Commands
 {
@@ -8,7 +8,7 @@ namespace CardGame.Scripts.Gameplay.PowerUp.Commands
         public void Execute(Player powerUser, Player targetPlayer)
         {
             powerUser.GetPlayerUI().SetCoverImage();
-            powerUser.coverTurns++;
+            powerUser.GivePowerUp(PowerUpType.Cover);
         }
     }
 }

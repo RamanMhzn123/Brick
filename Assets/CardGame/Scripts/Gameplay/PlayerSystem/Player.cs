@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Core.Managers;
-using CardGame.Scripts.Game_Elements;
 using CardGame.Scripts.UI;
 
 namespace CardGame.Scripts.Gameplay.PlayerSystem
@@ -12,12 +11,9 @@ namespace CardGame.Scripts.Gameplay.PlayerSystem
     public class Player : MonoBehaviour
     {
         public RectTransform deckTransform;
-        [Header("Player Properties")]
+        [Header("Player Properties")] 
         public int id;
-        public PlayerPowerUpData  powerUpData = new();
-        public int coverTurns;
-        public int blockedTurns;
-        public int replayTurns;
+        public PlayerPowerUpData powerUpData = new();
         
         [Header("UI References")]
         [SerializeField] private Button drawCardButton;
@@ -236,6 +232,10 @@ namespace CardGame.Scripts.Gameplay.PlayerSystem
         public void EndTurn() 
         {
             timerUI.StopTimer();
+            
+            drawCardButton.interactable = false; //??
+            playerUI.HighlightPlayer(false); //??
+            
             passButton.interactable = false;
 			
             CardUI activeCard  = GetTopFaceUpCard();
@@ -260,11 +260,6 @@ namespace CardGame.Scripts.Gameplay.PlayerSystem
         }
 
         public void RemoveCard(CardUI cardUI) => faceUpZone.faceUpDeck.Remove(cardUI);
-        
-        public void ReducePowerUp(PowerUpType powerUpType)
-        {
-            powerUpData.ReducePowerUpTurns(powerUpType);
-        }
 
         public void StopTimer()
         {
@@ -281,6 +276,24 @@ namespace CardGame.Scripts.Gameplay.PlayerSystem
             return playerUI;
         }
         
+        #region Power UP
+
+        public bool IsBlocked() => powerUpData.IsBlocked;
+        public bool IsReplay() => powerUpData.IsReplay;
+        public bool IsCovered() => powerUpData.IsCovered;
+        
+        public void GivePowerUp(PowerUpType powerUpType)
+        {
+            powerUpData.ApplyPowerUp(powerUpType);
+        }
+        
+        public void ReducePowerUp(PowerUpType powerUpType)
+        {
+            powerUpData.ReducePowerUpTurns(powerUpType);
+        }
+        
+        #endregion
+
         #region Penalty related
 
         public bool TryGetPenaltyCard(out CardUI penaltyCard)

@@ -1,7 +1,6 @@
 using UnityEngine;
 using CardGame.Scripts.Core.CardSystem;
 using CardGame.Scripts.Core.Managers;
-using CardGame.Scripts.Game_Elements;
 
 namespace CardGame.Scripts.Card_Creation_Logic
 {
@@ -19,7 +18,7 @@ namespace CardGame.Scripts.Card_Creation_Logic
         
         public void InitializeCardPool()
         {
-            if (cardPrefab == null)
+            if (!cardPrefab)
             {
                 Debug.LogError("Card prefab is not assigned!");
                 return;
@@ -33,7 +32,7 @@ namespace CardGame.Scripts.Card_Creation_Logic
         {
             CardUI cardUI = GetObject(CardPoolKey).GetComponentInChildren<CardUI>();
             
-            if (cardUI == null) return null;
+            if (!cardUI) return null;
             
             cardUI.transform.SetParent(customParent ?? poolParent);
             
@@ -43,7 +42,7 @@ namespace CardGame.Scripts.Card_Creation_Logic
 
         public void ReturnCardUI(CardUI cardUI, bool resetParent = true)
         {
-            if (cardUI == null) return;
+            if (!cardUI) return;
             
             cardUI.PrepareForPool();
             
@@ -57,7 +56,7 @@ namespace CardGame.Scripts.Card_Creation_Logic
 
         public CardUI GetBackCardUI(Transform customParent = null)
         {
-            CardUI cardUI = GetObject(BackCardPoolKey).GetComponentInChildren<CardUI>();
+            CardUI cardUI = GetObject(BackCardPoolKey).GetComponent<CardUI>();
             
             if (!cardUI) return null;
             

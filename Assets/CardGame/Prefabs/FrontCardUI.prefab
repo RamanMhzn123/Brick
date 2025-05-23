@@ -172,7 +172,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -910, y: -490}
-  m_SizeDelta: {x: 60, y: 45}
+  m_SizeDelta: {x: 135, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &153502277829461722
 CanvasRenderer:
@@ -238,3 +238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 9178006087975811044}
   text: {fileID: 2490105574430441568}
+  CardData:
+    number: 0
+    image: {fileID: 0}
+    cardColor: 0
+    powerUp: 0
